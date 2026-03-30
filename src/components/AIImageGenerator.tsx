@@ -1,13 +1,15 @@
 import { GoogleGenAI } from "@google/genai";
 import { useState } from "react";
 import { Loader2, Sparkles } from "lucide-react";
+import { AspectRatio } from "../types";
 
 interface AIImageGeneratorProps {
   onImageGenerated: (imageUrl: string) => void;
   prompt: string;
+  aspectRatio: AspectRatio;
 }
 
-export default function AIImageGenerator({ onImageGenerated, prompt }: AIImageGeneratorProps) {
+export default function AIImageGenerator({ onImageGenerated, prompt, aspectRatio }: AIImageGeneratorProps) {
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -28,7 +30,7 @@ export default function AIImageGenerator({ onImageGenerated, prompt }: AIImageGe
         },
         config: {
           imageConfig: {
-            aspectRatio: "3:4",
+            aspectRatio: aspectRatio,
             imageSize: "1K",
           },
         },

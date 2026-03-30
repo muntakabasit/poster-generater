@@ -1,5 +1,5 @@
-import { PosterData } from "../types";
-import { Plus, Trash2, Phone, MapPin, Tag, Palette, Type } from "lucide-react";
+import { PosterData, AspectRatio } from "../types";
+import { Plus, Trash2, Phone, MapPin, Tag, Palette, Type, Monitor, Smartphone, Square } from "lucide-react";
 
 interface EditorProps {
   data: PosterData;
@@ -26,8 +26,56 @@ export default function Editor({ data, onChange }: EditorProps) {
     handleChange("items", newItems);
   };
 
+  const ratios: { id: AspectRatio; label: string; icon: any }[] = [
+    { id: "3:4", label: "A3 Poster", icon: Monitor },
+    { id: "1:1", label: "Instagram Post", icon: Square },
+    { id: "9:16", label: "Story / Status", icon: Smartphone },
+  ];
+
   return (
     <div className="flex flex-col gap-8 p-8 bg-zinc-50 border-l border-zinc-200 h-full overflow-y-auto">
+      <div className="space-y-6">
+        <div className="flex items-center gap-2 mb-4">
+          <Palette className="w-5 h-5 text-zinc-400" />
+          <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-500">Design & Format</h3>
+        </div>
+
+        <div className="flex flex-col gap-3">
+          <label className="text-xs font-bold uppercase tracking-wider text-zinc-400">Aspect Ratio</label>
+          <div className="grid grid-cols-3 gap-2">
+            {ratios.map((ratio) => (
+              <button
+                key={ratio.id}
+                onClick={() => handleChange("aspectRatio", ratio.id)}
+                className={`flex flex-col items-center gap-2 p-3 border-2 transition-all rounded-xl ${
+                  data.aspectRatio === ratio.id
+                    ? "border-black bg-black text-white"
+                    : "border-zinc-200 bg-white text-zinc-500 hover:border-zinc-300"
+                }`}
+              >
+                <ratio.icon className="w-5 h-5" />
+                <span className="text-[10px] font-bold uppercase tracking-tight text-center leading-tight">
+                  {ratio.label}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <label className="text-xs font-bold uppercase tracking-wider text-zinc-400">Accent Color</label>
+          <div className="flex items-center gap-3">
+            <input
+              type="color"
+              value={data.accentColor}
+              onChange={(e) => handleChange("accentColor", e.target.value)}
+              className="w-12 h-12 p-1 bg-white border-2 border-zinc-200 rounded-lg cursor-pointer"
+            />
+            <span className="font-mono text-sm uppercase">{data.accentColor}</span>
+          </div>
+        </div>
+      </div>
+
       <div className="space-y-6">
         <div className="flex items-center gap-2 mb-4">
           <Type className="w-5 h-5 text-zinc-400" />
@@ -35,6 +83,26 @@ export default function Editor({ data, onChange }: EditorProps) {
         </div>
 
         <div className="space-y-4">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs font-bold uppercase tracking-wider text-zinc-400">Service Name</label>
+            <input
+              type="text"
+              value={data.serviceName}
+              onChange={(e) => handleChange("serviceName", e.target.value)}
+              className="w-full p-3 bg-white border-2 border-zinc-200 focus:border-black outline-none font-bold transition-all rounded-lg"
+            />
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs font-bold uppercase tracking-wider text-zinc-400">Brand Line</label>
+            <input
+              type="text"
+              value={data.brandLine}
+              onChange={(e) => handleChange("brandLine", e.target.value)}
+              className="w-full p-3 bg-white border-2 border-zinc-200 focus:border-black outline-none font-bold transition-all rounded-lg"
+            />
+          </div>
+
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-bold uppercase tracking-wider text-zinc-400">Headline</label>
             <input
@@ -100,26 +168,6 @@ export default function Editor({ data, onChange }: EditorProps) {
                 }`}
               />
             </button>
-          </div>
-        </div>
-      </div>
-
-      <div className="space-y-6">
-        <div className="flex items-center gap-2 mb-4">
-          <Palette className="w-5 h-5 text-zinc-400" />
-          <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-500">Design</h3>
-        </div>
-
-        <div className="flex flex-col gap-1.5">
-          <label className="text-xs font-bold uppercase tracking-wider text-zinc-400">Accent Color</label>
-          <div className="flex items-center gap-3">
-            <input
-              type="color"
-              value={data.accentColor}
-              onChange={(e) => handleChange("accentColor", e.target.value)}
-              className="w-12 h-12 p-1 bg-white border-2 border-zinc-200 rounded-lg cursor-pointer"
-            />
-            <span className="font-mono text-sm uppercase">{data.accentColor}</span>
           </div>
         </div>
       </div>
